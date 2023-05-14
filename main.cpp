@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 
-int raise_to_the_power (int value, int power) {
+int raise_to_the_power (const int value, const int power) {
     int result;
     if (power < 0) {
         result = 0;
@@ -31,15 +31,15 @@ public:
         M       = nullptr;
     }
 
-    Matrix(const char* Matrix_Name, int n, int m) {
+    Matrix(const char* Matrix_Name, const int n, const int m) {
         height  = n;
         width   = m;
         name    = Matrix_Name;
 
         M = (T**) new T*[height];
-        for (int i = 0; i < height; i++) M[i] = (T*) new T[width];
-
+        
         for (int i = 0; i < height; i++) {
+            M[i] = (T*) new T[width];
             for (int j = 0; j < width; j++) {
                 M[i][j] = 0;
             }
@@ -52,9 +52,9 @@ public:
         if (in.is_open()) {
             in >> height >> width;
             M = (T**) new T*[height];
-            for (int i = 0; i < height; i++) M[i] = (T*) new T[width];
 
             for (int i = 0; i < height; i++) {
+                M[i] = (T*) new T[width];
                 for (int j = 0; j < width; j++) {
                     in >> M[i][j];
                 }
@@ -118,7 +118,7 @@ public:
         return M;
     }
 
-    int get_size() {
+    int get_size() const {
         if (height != width) {
             std::cout << "The matrix is not square" << std::endl;
             return 0;
@@ -126,8 +126,8 @@ public:
         return height;
     }
 
-    int get_row() { return height;  }
-    int get_col() { return width;   }
+    int get_row() const { return height;  }
+    int get_col() const { return width;   }
 
     void print_matrix() {
         std::cout << "Matrix " << name << ": " << std::endl;
@@ -526,7 +526,7 @@ public:
                 delete[] M[i];
             }
         }
-        if (height > 0) delete[] M;
+        delete[] M;
     }
 };
 
